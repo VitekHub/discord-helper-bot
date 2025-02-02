@@ -1,18 +1,26 @@
 import discord
-from discord.ext import commands
+from discord import app_commands
 from .config import DISCORD_TOKEN
-from .commands.commands import SummaryCommands
+from .commands.commands import setup_commands
 
 # Initialize bot with intents
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='!', intents=intents)
+intents.guilds = True
 
-@bot.event
-async def on_ready():
-    print(f'{bot.user} has connected to Discord!')
-    # Add our commands
-    await bot.add_cog(SummaryCommands(bot))
+class SummaryBot(discord.Client):
+    def __init__(self):
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self)
+
+    async def setup_hook(self):
+        # Set up commands
+        await setup_commands(self.tree)
+        # Sync commands with Discord
+        await self.tree.sync()
+
+    async def on_ready(self):
+        print(f'{self.user} has connected to Discord!')
 
 def run_bot():
     """Run the Discord bot"""
@@ -20,5 +28,6 @@ def run_bot():
         print("Error: DISCORD_TOKEN not found in .env file")
         return
         
-    # Run the bot
+    # Create and run the bot
+    bot = SummaryBot()
     bot.run(DISCORD_TOKEN)
