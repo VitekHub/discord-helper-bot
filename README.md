@@ -1,12 +1,16 @@
 # Discord Channel Summarizer Bot
 
-A Discord bot that uses Google's Generative AI to summarize channel conversations.
+A Discord bot that uses Google's Gemini Pro AI to summarize channel conversations and extract vital information. Built with a modular and maintainable architecture.
 
 ## Features
 
-- Summarize channel messages using Google's Gemini AI
+- Summarize channel messages using Google's Gemini Pro AI
 - Configurable message limit
+- Extract vital information from conversations (in Czech)
+- Filter messages by time, date range, and user mentions
 - Easy to use commands
+- Modular code structure
+- Clean separation of concerns
 
 ## Setup
 
@@ -32,8 +36,27 @@ A Discord bot that uses Google's Generative AI to summarize channel conversation
 
 5. Run the bot:
    ```bash
-   python bot-summarizer.py
+   python main.py
    ```
+
+## Project Structure
+
+```
+src/
+├── commands/           # Command handlers
+│   ├── base.py        # Base command class
+│   ├── commands.py    # Command registration
+│   ├── filter_command.py
+│   ├── help_command.py
+│   ├── id_command.py
+│   └── link_command.py
+├── services/          # Core services
+│   ├── ai_service.py  # AI integration
+│   └── message_service.py
+└── utils/            # Utility functions
+    ├── argument_parser.py
+    └── time_parser.py
+```
 
 ## Commands
 
@@ -89,4 +112,7 @@ Advanced Options:
 ## Notes
 
 - The bot uses Google's Gemini Pro model for text generation
-- The bot requires the Message Content Intent to be enabled in the Discord Developer Portal
+- Code follows object-oriented design principles
+- Each component has a single responsibility
+- Message Content Intent must be enabled in the Discord Developer Portal
+- The vital information extraction feature provides output in Czech language
