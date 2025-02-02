@@ -50,7 +50,16 @@ A Discord bot that uses Google's Gemini Pro AI or Ollama to summarize channel co
    - Add your Discord bot token
    - Configure your chosen AI provider
 
-5. Run the bot:
+5. Run tests (optional):
+   ```bash
+   # Run all tests
+   python -m pytest
+   
+   # Run tests with coverage report
+   python -m pytest --cov=src --cov-report=term-missing
+   ```
+
+6. Run the bot:
    ```bash
    python main.py
    ```
@@ -58,6 +67,12 @@ A Discord bot that uses Google's Gemini Pro AI or Ollama to summarize channel co
 ## Project Structure
 
 ```
+tests/                # Test suite
+├── conftest.py      # Test configuration and fixtures
+├── test_ai_service.py
+├── test_commands.py
+└── test_message_service.py
+
 src/
 ├── commands/           # Command handlers
 │   ├── base.py        # Base command class
@@ -141,3 +156,23 @@ Advanced Options:
 - Bot requires `applications.commands` scope for slash commands
 - The vital information extraction feature provides output in Czech language
 - The find command allows custom analysis using any prompt
+
+## Testing
+
+The project includes a comprehensive test suite using pytest. Key test features:
+
+- Unit tests for all major components
+- Async test support via pytest-asyncio
+- Mock objects for Discord interactions
+- Coverage reporting
+
+Run tests using:
+```bash
+# Run all tests
+python -m pytest
+
+# Run tests with coverage report
+python -m pytest --cov=src --cov-report=term-missing
+```
+
+Test coverage helps identify untested code paths and ensures robust functionality.
