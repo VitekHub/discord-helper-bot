@@ -11,6 +11,7 @@ class OllamaAiProvider(BaseAiProvider):
     
     async def generate_content(self, prompt: str) -> str:
         try:
+            await super().generate_content(prompt)
             async with aiohttp.ClientSession() as session:
                 async with session.post(
                     f"{self.base_url}/api/generate",

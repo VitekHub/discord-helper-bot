@@ -18,7 +18,7 @@ class BaseSummaryCommand:
             await self.send_status("Nenalezeny žádné zprávy k analýze.")
             return False
 
-        conversation_text = "\n".join(messages[::-1])  # Reverse for chronological order
+        conversation_text = "\n".join(messages)  # Messages are already in chronological order
         summary = await self.ai_service.get_ai_summary(conversation_text)
         
         await self.ctx.send(f"**{summary_type} z {len(messages)} zpráv:**\n\n{summary}")
@@ -30,7 +30,7 @@ class BaseSummaryCommand:
             await self.send_status("Nenalezeny žádné zprávy k analýze.")
             return False
 
-        conversation_text = "\n".join(messages[::-1])
+        conversation_text = "\n".join(messages)
         vital_info = await self.ai_service.get_vital_info(conversation_text)
         
         await self.ctx.send(f"**Důležité informace z {len(messages)} zpráv:**\n\n{vital_info}")

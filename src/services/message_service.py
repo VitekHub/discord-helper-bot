@@ -12,19 +12,21 @@ class MessageService:
     async def get_channel_messages(self, channel, limit=100, after=None, before=None):
         """Fetch messages from a channel"""
         messages = []
-        async for message in channel.history(limit=limit, after=after, before=before):
+        # Use oldest_first=True to get messages in chronological order
+        async for message in channel.history(limit=limit, after=after, before=before, oldest_first=True):
             messages.append(message.content)
         return messages
 
     async def get_messages_between(self, channel, start_id, end_id):
         """Get messages between two message IDs"""
         messages = []
-        async for message in channel.history(limit=None):
-            if message.id == end_id:
+        # Use oldest_first=True to get messages in chronological order
+        async for message in channel.history(limit=None, oldest_first=True):
+            if message.id == start_id:
                 messages.append(message.content)
-            elif message.id == start_id:
+            elif message.id == end_id:
                 messages.append(message.content)
                 break
             elif messages:  # If we've started collecting (after end_id)
                 messages.append(message.content)
-        return messages[::-1]  # Reverse to get chronological order
+        return messages  # Already in chronological order

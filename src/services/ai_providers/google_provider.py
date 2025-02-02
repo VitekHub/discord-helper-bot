@@ -11,6 +11,7 @@ class GoogleAiProvider(BaseAiProvider):
     
     async def generate_content(self, prompt: str) -> str:
         try:
+            await super().generate_content(prompt)
             response = await self.model.generate_content_async(prompt)
             return response.text
         except Exception as e:
