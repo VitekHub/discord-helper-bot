@@ -5,6 +5,9 @@ class FindCommand(BaseSummaryCommand):
     async def execute(self, args):
         """Execute find command"""
         try:
+            # Send initial response
+            await self.interaction.response.defer(thinking=True, ephemeral=True)
+            
             # Join all args to handle spaces correctly
             full_text = " ".join(args)
             

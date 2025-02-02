@@ -10,7 +10,7 @@ class BaseSummaryCommand:
 
     async def send_status(self, message):
         """Send status message"""
-        await self.interaction.response.send_message(message)
+        await self.interaction.response.send_message(message, ephemeral=True)
 
     async def send_summary(self, messages, summary_type="Shrnutí"):
         """Send summary of messages"""
@@ -24,12 +24,14 @@ class BaseSummaryCommand:
         # If we haven't sent an initial response yet, use response.send_message
         if not self.interaction.response.is_done():
             await self.interaction.response.send_message(
-                f"**{summary_type} z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{summary}"
+                f"**{summary_type} z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{summary}",
+                ephemeral=True
             )
         else:
             # Otherwise, use followup.send
             await self.interaction.followup.send(
-                f"**{summary_type} z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{summary}"
+                f"**{summary_type} z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{summary}",
+                ephemeral=True
             )
         return True
 
@@ -45,11 +47,13 @@ class BaseSummaryCommand:
         # If we haven't sent an initial response yet, use response.send_message
         if not self.interaction.response.is_done():
             await self.interaction.response.send_message(
-                f"**Důležité informace z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{vital_info}"
+                f"**Důležité informace z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{vital_info}",
+                ephemeral=True
             )
         else:
             # Otherwise, use followup.send
             await self.interaction.followup.send(
-                f"**Důležité informace z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{vital_info}"
+                f"**Důležité informace z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{vital_info}",
+                ephemeral=True
             )
         return True

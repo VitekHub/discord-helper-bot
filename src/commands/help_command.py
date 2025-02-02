@@ -33,4 +33,4 @@ class HelpCommand:
 • `/find "Najdi všechny zmínky o termínech schůzek" count:100` - Najde termíny v posledních 100 zprávách
 • `/find "Jaká technická rozhodnutí byla učiněna?" time:24h` - Analyzuje rozhodnutí za posledních 24 hodin
 """
-        await interaction.response.send_message(help_text)
+        await interaction.response.send_message(help_text, ephemeral=True)

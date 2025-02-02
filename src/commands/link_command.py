@@ -4,6 +4,9 @@ class LinkSummaryCommand(BaseSummaryCommand):
     async def execute(self, from_link: str, to_link: str):
         """Execute link summary command"""
         try:
+            # Send initial response
+            await self.interaction.response.defer(thinking=True, ephemeral=True)
+            
             start_id = self.message_service.extract_message_id(from_link)
             end_id = self.message_service.extract_message_id(to_link)
             
