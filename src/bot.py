@@ -11,6 +11,8 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
+    # Add our commands
+    await bot.add_cog(SummaryCommands(bot))
 
 def run_bot():
     """Run the Discord bot"""
@@ -18,8 +20,5 @@ def run_bot():
         print("Error: DISCORD_TOKEN not found in .env file")
         return
         
-    # Add our commands
-    bot.add_cog(SummaryCommands(bot))
-    
     # Run the bot
     bot.run(DISCORD_TOKEN)

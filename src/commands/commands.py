@@ -36,7 +36,7 @@ class SummaryCommands(commands.Cog):
         command = FilterSummaryCommand(ctx, self.message_service, self.ai_service)
         await command.execute(args, vital=True)
 
-    @commands.command(name='sumhelp')
+    @commands.command(name='sum-help')
     async def sumhelp(self, ctx):
         """Show help information"""
         await HelpCommand.execute(ctx)
