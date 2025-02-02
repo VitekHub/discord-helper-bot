@@ -44,11 +44,12 @@ class FindCommand(BaseSummaryCommand):
                         break
             
             if not prompt or not prompt.strip():
-                await self.send_status('Chybí prompt. Použijte: !find [možnosti] "váš prompt v uvozovkách" nebo \'váš prompt v uvozovkách\'')
+                await self.interaction.followup.send(
+                    'Chybí prompt. Použijte: !find [možnosti] "váš prompt v uvozovkách" nebo \'váš prompt v uvozovkách\'',
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
                 return
                 
-            await self.send_status("Analyzuji zprávy podle zadaného promptu...")
-            
             # Parse remaining arguments
             parser = ArgumentParser(other_args)
             filters = parser.parse()
@@ -65,7 +66,10 @@ class FindCommand(BaseSummaryCommand):
                 messages = [msg for msg in messages if filters.mentioned_user in msg]
                 
             if not messages:
-                await self.send_status("Nenalezeny žádné zprávy k analýze.")
+                await self.interaction.followup.send(
+                    "Nenalezeny žádné zprávy k analýze.",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
                 return
                 
             # Send messages to AI with custom prompt
@@ -78,4 +82,13 @@ class FindCommand(BaseSummaryCommand):
             )
             
         except Exception as e:
-            await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")
+            if not self.interaction.response.is_done():
+                await self.interaction.response.send_message(
+                    f"Chyba při zpracování příkazu: {str(e)}",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
+            else:
+                await self.interaction.followup.send(
+                    f"Chyba při zpracování příkazu: {str(e)}",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
