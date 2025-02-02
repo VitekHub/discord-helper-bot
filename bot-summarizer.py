@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import google.generativeai as genai
 from datetime import datetime, timedelta
+import re
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -51,9 +52,59 @@ async def get_ai_summary(text):
     except Exception as e:
         return f"Error generating summary: {str(e)}"
 
+def extract_message_id(message_link):
+    """Extract message ID from Discord message link"""
+    pattern = r"discord\.com/channels/\d+/\d+/(\d+)"
+    match = re.search(pattern, message_link)
+    return int(match.group(1)) if match else None
+
+async def get_messages_between(channel, start_id, end_id):
+    """Get messages between two message IDs"""
+    messages = []
+    async for message in channel.history(limit=None):
+        if message.id == end_id:
+            messages.append(message.content)
+        elif message.id == start_id:
+            messages.append(message.content)
+            break
+        elif messages:  # If we've started collecting (after end_id)
+            messages.append(message.content)
+    return messages[::-1]  # Reverse to get chronological order
+
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
+
+@bot.command(name='sum-links')
+async def sum_links(ctx, from_link: str, to_link: str):
+    """Summarize messages between two message links"""
+    try:
+        # Extract message IDs
+        start_id = extract_message_id(from_link)
+        end_id = extract_message_id(to_link)
+        
+        if not start_id or not end_id:
+            await ctx.send("Invalid message links. Please use valid Discord message links.")
+            return
+            
+        await ctx.send("Fetching messages between the selected range...")
+        
+        # Get messages between IDs
+        messages = await get_messages_between(ctx.channel, start_id, end_id)
+        
+        if not messages:
+            await ctx.send("No messages found in the specified range.")
+            return
+            
+        # Join messages and get summary
+        conversation_text = "\n".join(messages)
+        summary = await get_ai_summary(conversation_text)
+        
+        # Send summary
+        await ctx.send(f"**Summary of {len(messages)} messages in selected range:**\n\n{summary}")
+        
+    except Exception as e:
+        await ctx.send(f"An error occurred: {str(e)}")
 
 @bot.command(name='sum', usage='[time/count] [user] [--after YYYY-MM-DD] [--before YYYY-MM-DD]')
 async def sum(ctx, *args):
@@ -122,6 +173,37 @@ async def sum(ctx, *args):
     except Exception as e:
         await ctx.send(f"An error occurred: {str(e)}")
 
+@bot.command(name='sum-ids')
+async def sum_ids(ctx, start_id: str, end_id: str):
+    """Summarize messages between two message IDs"""
+    try:
+        # Convert string IDs to integers
+        try:
+            start_id = int(start_id)
+            end_id = int(end_id)
+        except ValueError:
+            await ctx.send("Invalid message IDs. Please use valid Discord message IDs.")
+            return
+            
+        await ctx.send("Fetching messages between the selected IDs...")
+        
+        # Get messages between IDs
+        messages = await get_messages_between(ctx.channel, start_id, end_id)
+        
+        if not messages:
+            await ctx.send("No messages found in the specified range.")
+            return
+            
+        # Join messages and get summary
+        conversation_text = "\n".join(messages)
+        summary = await get_ai_summary(conversation_text)
+        
+        # Send summary
+        await ctx.send(f"**Summary of {len(messages)} messages in selected range:**\n\n{summary}")
+        
+    except Exception as e:
+        await ctx.send(f"An error occurred: {str(e)}")
+
 @bot.command(name='help_summary')
 async def help_summary(ctx):
     """Show help information"""
@@ -131,6 +213,8 @@ async def help_summary(ctx):
 **Basic Commands:**
 • `!sum [number]` - Summarize the last [number] messages (default: 100)
 • `!help_summary` - Show this help message
+• `!sum-links [first_message_link] [last_message_link]` - Summarize messages between two message links
+• `!sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
 
 **Advanced Options:**
 1. Time-based summary:
@@ -147,6 +231,8 @@ async def help_summary(ctx):
 • `!sum 50` - Last 50 messages
 • `!sum 24h @username` - User mentions in last 24 hours
 • `!sum 7d --after 2024-01-01` - Last 7 days of messages after Jan 1, 2024
+• `!sum-links [message_link1] [message_link2]` - Messages between two links
+• `!sum-ids 1234567890 1234567891` - Messages between two IDs
 """
     await ctx.send(help_text)
 

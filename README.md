@@ -40,6 +40,8 @@ A Discord bot that uses Google's Generative AI to summarize channel conversation
 Basic Commands:
 - `!sum [number]` - Summarize the last [number] messages (default: 100)
 - `!help_summary` - Show help information
+- `!sum-links [first_message_link] [last_message_link]` - Summarize messages between two message links
+- `!sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
 
 Advanced Options:
 1. Time-based summary:
@@ -69,6 +71,12 @@ Advanced Options:
 # Date range summaries
 !sum --after 2024-02-01 --before 2024-02-28    # Messages between dates
 !sum 7d --after 2024-01-01                     # Last 7 days after Jan 1, 2024
+
+# Message link range summary
+!sum-links https://discord.com/.../message1_id https://discord.com/.../message2_id
+
+# Message ID range summary
+!sum-ids 1234567890 1234567891
 ```
 
 ## Notes
