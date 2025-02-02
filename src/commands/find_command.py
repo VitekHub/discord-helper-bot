@@ -1,10 +1,14 @@
 from .base import BaseSummaryCommand
 from ..utils.argument_parser import ArgumentParser
+from ..config import EPHEMERAL_MESSAGES
 
 class FindCommand(BaseSummaryCommand):
     async def execute(self, args):
         """Execute find command"""
         try:
+            # Send initial response
+            await self.interaction.response.defer(thinking=True, ephemeral=EPHEMERAL_MESSAGES)
+            
             # Join all args to handle spaces correctly
             full_text = " ".join(args)
             
@@ -40,18 +44,19 @@ class FindCommand(BaseSummaryCommand):
                         break
             
             if not prompt or not prompt.strip():
-                await self.send_status('Chybí prompt. Použijte: !find [možnosti] "váš prompt v uvozovkách" nebo \'váš prompt v uvozovkách\'')
+                await self.interaction.followup.send(
+                    'Chybí prompt. Použijte: !find [možnosti] "váš prompt v uvozovkách" nebo \'váš prompt v uvozovkách\'',
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
                 return
                 
-            await self.send_status("Analyzuji zprávy podle zadaného promptu...")
-            
             # Parse remaining arguments
             parser = ArgumentParser(other_args)
             filters = parser.parse()
             
             # Get messages with filters
             messages = await self.message_service.get_channel_messages(
-                self.ctx.channel,
+                self.interaction.channel,
                 limit=filters.limit,
                 after=filters.after,
                 before=filters.before
@@ -61,14 +66,29 @@ class FindCommand(BaseSummaryCommand):
                 messages = [msg for msg in messages if filters.mentioned_user in msg]
                 
             if not messages:
-                await self.send_status("Nenalezeny žádné zprávy k analýze.")
+                await self.interaction.followup.send(
+                    "Nenalezeny žádné zprávy k analýze.",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
                 return
                 
             # Send messages to AI with custom prompt
             conversation_text = "\n".join(messages)
             response = await self.ai_service.process_custom_prompt(conversation_text, prompt)
             
-            await self.ctx.send(f"**Výsledek analýzy {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{response}")
+            await self.interaction.followup.send(
+                f"**Výsledek analýzy {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{response}",
+                ephemeral=EPHEMERAL_MESSAGES
+            )
             
         except Exception as e:
-            await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")
+            if not self.interaction.response.is_done():
+                await self.interaction.response.send_message(
+                    f"Chyba při zpracování příkazu: {str(e)}",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
+            else:
+                await self.interaction.followup.send(
+                    f"Chyba při zpracování příkazu: {str(e)}",
+                    ephemeral=EPHEMERAL_MESSAGES
+                )
