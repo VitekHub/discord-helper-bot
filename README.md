@@ -66,6 +66,7 @@ Basic Commands:
 - `!sum-links [first_message_link] [last_message_link]` - Summarize messages between two message links
 - `!sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
 - `!vital [options]` - Extract vital information and key points (Czech)
+- `!find [options] "prompt"` - Analyze messages using a custom prompt
 
 Advanced Options:
 1. Time-based summary:
@@ -103,10 +104,16 @@ Advanced Options:
 !sum-ids 1234567890 1234567891
 
 # Vital information extraction
-!vital 50                    # Last 50 messages
-!vital 24h                   # Last 24 hours
-!vital @username            # Messages mentioning user
-!vital --after 2024-02-01   # Messages after specific date
+!vital 50                     # Last 50 messages
+!vital 24h                    # Last 24 hours
+!vital @username             # Messages mentioning user
+!vital --after 2024-02-01    # Messages after specific date
+
+# Custom prompt analysis
+!find 100 "Find all meeting dates"                    # Search in last 100 messages
+!find 24h "What technical decisions were made?"       # Analyze last 24 hours
+!find @username "What is this person responsible for?" # Analyze user mentions
+!find "What was discussed about the API?"             # Default: last 100 messages
 ```
 
 ## Notes
@@ -116,3 +123,4 @@ Advanced Options:
 - Each component has a single responsibility
 - Message Content Intent must be enabled in the Discord Developer Portal
 - The vital information extraction feature provides output in Czech language
+- The find command allows custom analysis using any prompt
