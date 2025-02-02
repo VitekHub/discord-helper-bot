@@ -1,10 +1,8 @@
-import google.generativeai as genai
-from ..config import GOOGLE_API_KEY
+from .ai_providers.factory import AiProviderFactory
 
 class AiService:
     def __init__(self):
-        genai.configure(api_key=GOOGLE_API_KEY)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.provider = AiProviderFactory.create_provider()
 
     async def get_ai_summary(self, text: str) -> str:
         """Get summary from Google AI"""
@@ -13,8 +11,7 @@ class AiService:
 {text}"""
 
         try:
-            response = await self.model.generate_content_async(prompt)
-            return response.text
+            return await self.provider.generate_content(prompt)
         except Exception as e:
             return f"Chyba při generování shrnutí: {str(e)}"
 
@@ -27,7 +24,6 @@ Text konverzace:
 {text}"""
 
         try:
-            response = await self.model.generate_content_async(prompt)
-            return response.text
+            return await self.provider.generate_content(prompt)
         except Exception as e:
             return f"Chyba při generování analýzy: {str(e)}"
