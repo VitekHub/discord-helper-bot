@@ -39,9 +39,10 @@ A Discord bot that uses Google's Generative AI to summarize channel conversation
 
 Basic Commands:
 - `!sum [number]` - Summarize the last [number] messages (default: 100)
-- `!help_summary` - Show help information
+- `!sum-help` - Show help information
 - `!sum-links [first_message_link] [last_message_link]` - Summarize messages between two message links
 - `!sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
+- `!vital [options]` - Extract vital information and key points (Czech)
 
 Advanced Options:
 1. Time-based summary:
@@ -77,6 +78,12 @@ Advanced Options:
 
 # Message ID range summary
 !sum-ids 1234567890 1234567891
+
+# Vital information extraction
+!vital 50                    # Last 50 messages
+!vital 24h                   # Last 24 hours
+!vital @username            # Messages mentioning user
+!vital --after 2024-02-01   # Messages after specific date
 ```
 
 ## Notes
