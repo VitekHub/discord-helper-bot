@@ -21,7 +21,7 @@ class BaseSummaryCommand:
         conversation_text = "\n".join(messages)  # Messages are already in chronological order
         summary = await self.ai_service.get_ai_summary(conversation_text)
         
-        await self.ctx.send(f"**{summary_type} z {len(messages)} zpráv:**\n\n{summary}")
+        await self.ctx.send(f"**{summary_type} z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{summary}")
         return True
 
     async def send_vital_info(self, messages):
@@ -33,5 +33,5 @@ class BaseSummaryCommand:
         conversation_text = "\n".join(messages)
         vital_info = await self.ai_service.get_vital_info(conversation_text)
         
-        await self.ctx.send(f"**Důležité informace z {len(messages)} zpráv:**\n\n{vital_info}")
+        await self.ctx.send(f"**Důležité informace z {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{vital_info}")
         return True
