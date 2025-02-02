@@ -8,13 +8,12 @@ class LinkSummaryCommand(BaseSummaryCommand):
             end_id = self.message_service.extract_message_id(to_link)
             
             if not start_id or not end_id:
-                await self.send_status("Invalid message links. Please use valid Discord message links.")
+                await self.send_status("Neplatné odkazy na zprávy. Použijte prosím platné odkazy na Discord zprávy.")
                 return
                 
-            await self.send_status("Fetching messages between the selected range...")
+            await self.send_status("Načítám zprávy ve vybraném rozsahu...")
             
             messages = await self.message_service.get_messages_between(
                 self.ctx.channel, start_id, end_id
             )
             
-            await self.send_summary(messages, "Summary of messages in selected range")

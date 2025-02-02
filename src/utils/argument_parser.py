@@ -34,13 +34,13 @@ class ArgumentParser:
                     options.after = datetime.strptime(self.args[i + 1], '%Y-%m-%d')
                     i += 1
                 except ValueError:
-                    raise ValueError("Invalid date format for --after. Use YYYY-MM-DD")
+                    raise ValueError("Neplatný formát data pro --after. Použijte YYYY-MM-DD")
             elif arg == '--before' and i + 1 < len(self.args):
                 try:
                     options.before = datetime.strptime(self.args[i + 1], '%Y-%m-%d')
                     i += 1
                 except ValueError:
-                    raise ValueError("Invalid date format for --before. Use YYYY-MM-DD")
+                    raise ValueError("Neplatný formát data pro --before. Použijte YYYY-MM-DD")
             i += 1
             
         return options

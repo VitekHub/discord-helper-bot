@@ -4,7 +4,7 @@ from ..utils.argument_parser import ArgumentParser
 class FilterSummaryCommand(BaseSummaryCommand):
     async def execute(self, args, vital=False):
         """Execute filter summary command"""
-        status_message = "Analyzuji zprávy a hledám důležité informace..." if vital else "Fetching messages and generating summary..."
+        status_message = "Analyzuji zprávy a hledám důležité informace..." if vital else "Načítám zprávy a generuji shrnutí..."
         await self.send_status(status_message)
         
         try:

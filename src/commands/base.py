@@ -12,16 +12,16 @@ class BaseSummaryCommand:
         """Send status message to channel"""
         await self.ctx.send(message)
 
-    async def send_summary(self, messages, summary_type="Summary"):
+    async def send_summary(self, messages, summary_type="Shrnutí"):
         """Send summary of messages"""
         if not messages:
-            await self.send_status("No messages found to summarize.")
+            await self.send_status("Nenalezeny žádné zprávy k analýze.")
             return False
 
         conversation_text = "\n".join(messages[::-1])  # Reverse for chronological order
         summary = await self.ai_service.get_ai_summary(conversation_text)
         
-        await self.ctx.send(f"**{summary_type} of {len(messages)} messages:**\n\n{summary}")
+        await self.ctx.send(f"**{summary_type} z {len(messages)} zpráv:**\n\n{summary}")
         return True
 
     async def send_vital_info(self, messages):

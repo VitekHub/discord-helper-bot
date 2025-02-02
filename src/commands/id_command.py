@@ -8,13 +8,13 @@ class IdSummaryCommand(BaseSummaryCommand):
                 start_id = int(start_id)
                 end_id = int(end_id)
             except ValueError:
-                await self.send_status("Invalid message IDs. Please use valid Discord message IDs.")
+                await self.send_status("Neplatná ID zpráv. Použijte prosím platná Discord ID zpráv.")
                 return
                 
-            await self.send_status("Fetching messages between the selected IDs...")
+            await self.send_status("Načítám zprávy mezi vybranými ID...")
             
             messages = await self.message_service.get_messages_between(
                 self.ctx.channel, start_id, end_id
             )
             
-            await self.send_summary(messages, "Summary of messages in selected range")
+            await self.send_summary(messages, "Shrnutí zpráv ve vybraném rozsahu")
