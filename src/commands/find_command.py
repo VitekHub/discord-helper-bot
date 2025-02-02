@@ -1,12 +1,13 @@
 from .base import BaseSummaryCommand
 from ..utils.argument_parser import ArgumentParser
+from ..config import EPHEMERAL_MESSAGES
 
 class FindCommand(BaseSummaryCommand):
     async def execute(self, args):
         """Execute find command"""
         try:
             # Send initial response
-            await self.interaction.response.defer(thinking=True, ephemeral=True)
+            await self.interaction.response.defer(thinking=True, ephemeral=EPHEMERAL_MESSAGES)
             
             # Join all args to handle spaces correctly
             full_text = " ".join(args)
@@ -54,7 +55,7 @@ class FindCommand(BaseSummaryCommand):
             
             # Get messages with filters
             messages = await self.message_service.get_channel_messages(
-                self.ctx.channel,
+                self.interaction.channel,
                 limit=filters.limit,
                 after=filters.after,
                 before=filters.before
@@ -71,7 +72,10 @@ class FindCommand(BaseSummaryCommand):
             conversation_text = "\n".join(messages)
             response = await self.ai_service.process_custom_prompt(conversation_text, prompt)
             
-            await self.ctx.send(f"**Výsledek analýzy {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{response}")
+            await self.interaction.followup.send(
+                f"**Výsledek analýzy {len(messages)} zpráv** (bez příkazů a zpráv botů):\n\n{response}",
+                ephemeral=EPHEMERAL_MESSAGES
+            )
             
         except Exception as e:
             await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")

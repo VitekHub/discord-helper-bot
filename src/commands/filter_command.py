@@ -1,13 +1,14 @@
 from .base import BaseSummaryCommand
 from ..utils.argument_parser import ArgumentParser
 import discord
+from ..config import EPHEMERAL_MESSAGES
 
 class FilterSummaryCommand(BaseSummaryCommand):
     async def execute(self, args, vital=False):
         """Execute filter summary command"""
         try:
             # Send initial response
-            await self.interaction.response.defer(thinking=True, ephemeral=True)
+            await self.interaction.response.defer(thinking=True, ephemeral=EPHEMERAL_MESSAGES)
             
             # Parse arguments
             parser = ArgumentParser(args)
@@ -35,11 +36,11 @@ class FilterSummaryCommand(BaseSummaryCommand):
             if not self.interaction.response.is_done():
                 await self.interaction.response.send_message(
                     f"Chyba při zpracování příkazu: {str(e)}",
-                    ephemeral=True
+                    ephemeral=EPHEMERAL_MESSAGES
                 )
             else:
                 # Otherwise send a followup
                 await self.interaction.followup.send(
                     f"Chyba při zpracování příkazu: {str(e)}",
-                    ephemeral=True
+                    ephemeral=EPHEMERAL_MESSAGES
                 )

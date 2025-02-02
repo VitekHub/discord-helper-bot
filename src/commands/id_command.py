@@ -1,4 +1,5 @@
 from .base import BaseSummaryCommand
+from ..config import EPHEMERAL_MESSAGES
 
 class IdSummaryCommand(BaseSummaryCommand):
     async def execute(self, start_id: str, end_id: str):
@@ -14,7 +15,7 @@ class IdSummaryCommand(BaseSummaryCommand):
             await self.send_status("Načítám zprávy mezi vybranými ID...")
             
             messages = await self.message_service.get_messages_between(
-                self.ctx.channel, start_id, end_id
+                self.interaction.channel, start_id, end_id
             )
             
             await self.send_summary(messages, "Shrnutí zpráv ve vybraném rozsahu")

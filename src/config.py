@@ -15,3 +15,6 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 # Ollama configuration
 OLLAMA_HOST = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
 OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'llama2')
+
+# Bot configuration
+EPHEMERAL_MESSAGES = os.getenv('EPHEMERAL_MESSAGES', 'true').lower() == 'true'
