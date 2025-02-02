@@ -2,6 +2,7 @@ from discord.ext import commands
 from .link_command import LinkSummaryCommand
 from .id_command import IdSummaryCommand
 from .filter_command import FilterSummaryCommand
+from .find_command import FindCommand
 from .help_command import HelpCommand
 from ..services.message_service import MessageService
 from ..services.ai_service import AiService
@@ -35,6 +36,12 @@ class SummaryCommands(commands.Cog):
         """Extract vital information from messages"""
         command = FilterSummaryCommand(ctx, self.message_service, self.ai_service)
         await command.execute(args, vital=True)
+
+    @commands.command(name='find')
+    async def find(self, ctx, *args):
+        """Find specific information in messages using custom prompt"""
+        command = FindCommand(ctx, self.message_service, self.ai_service)
+        await command.execute(args)
 
     @commands.command(name='sum-help')
     async def sumhelp(self, ctx):

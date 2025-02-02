@@ -13,6 +13,7 @@ class HelpCommand:
 • `!sum-links [první_odkaz] [poslední_odkaz]` - Shrne zprávy mezi dvěma odkazy
 • `!sum-ids [první_id] [poslední_id]` - Shrne zprávy mezi dvěma ID
 • `!vital [možnosti]` - Extrahuje důležité informace a klíčové body
+• `!find [možnosti] "prompt"` - Analyzuje zprávy podle vlastního promptu
 
 **Pokročilé možnosti:**
 1. Časové shrnutí:
@@ -31,5 +32,8 @@ class HelpCommand:
 • `!sum 7d --after 2024-01-01` - Posledních 7 dní zpráv po 1. lednu 2024
 • `!sum-links [odkaz1] [odkaz2]` - Zprávy mezi dvěma odkazy
 • `!sum-ids 1234567890 1234567891` - Zprávy mezi dvěma ID
+• `!find 100 "Najdi všechny zmínky o termínech schůzek"` - Najde termíny v posledních 100 zprávách
+• `!find 24h "Jaká technická rozhodnutí byla učiněna?"` - Analyzuje rozhodnutí za posledních 24 hodin
+• `!find @user "Za co je tento člověk zodpovědný?"` - Analyzuje zodpovědnosti zmíněného uživatele
 """
         await ctx.send(help_text)
