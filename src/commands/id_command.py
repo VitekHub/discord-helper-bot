@@ -18,3 +18,6 @@ class IdSummaryCommand(BaseSummaryCommand):
             )
             
             await self.send_summary(messages, "Shrnutí zpráv ve vybraném rozsahu")
+            
+        except Exception as e:
+            await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")

@@ -4,10 +4,10 @@ from ..utils.argument_parser import ArgumentParser
 class FilterSummaryCommand(BaseSummaryCommand):
     async def execute(self, args, vital=False):
         """Execute filter summary command"""
-        status_message = "Analyzuji zprávy a hledám důležité informace..." if vital else "Načítám zprávy a generuji shrnutí..."
-        await self.send_status(status_message)
-        
         try:
+            status_message = "Analyzuji zprávy a hledám důležité informace..." if vital else "Načítám zprávy a generuji shrnutí..."
+            await self.send_status(status_message)
+            
             # Parse arguments
             parser = ArgumentParser(args)
             filters = parser.parse()
@@ -27,3 +27,6 @@ class FilterSummaryCommand(BaseSummaryCommand):
                 await self.send_vital_info(messages)
             else:
                 await self.send_summary(messages)
+                
+        except Exception as e:
+            await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")

@@ -17,3 +17,7 @@ class LinkSummaryCommand(BaseSummaryCommand):
                 self.ctx.channel, start_id, end_id
             )
             
+            await self.send_summary(messages, "Shrnutí zpráv ve vybraném rozsahu")
+            
+        except Exception as e:
+            await self.send_status(f"Chyba při zpracování příkazu: {str(e)}")
