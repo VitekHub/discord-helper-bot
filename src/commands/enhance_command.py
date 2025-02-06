@@ -9,7 +9,7 @@ class EnhanceCommand(BaseSummaryCommand):
             await self.interaction.response.defer(thinking=True, ephemeral=EPHEMERAL_MESSAGES)
             
             # Create the prompt
-            prompt = f"""Udělej z tohoto Discord zprávu s nadpisy pomocí ## a s emoji na začátku každého nadpisu, s dalším formátováním pomocí **, odrážkami, a s dalšími emoji apod. Můžeš text i rozvést nebo upravit formulaci. Výstup by měl být včetně formátování jako 'raw' text, který mohu přímo zkopírovat. Zde je zpráva:
+            prompt = f"""Udělej z tohoto Discord zprávu s nadpisy pomocí ## a s emoji před každým nadpisem, s dalším formátováním pomocí **, odrážkami, a s dalšími emoji apod. Můžeš text i rozvést nebo upravit formulaci. Výstup by měl být včetně formátování jako 'raw' text, který mohu přímo zkopírovat. Zde je zpráva:
 {message}"""
 
             # Get enhanced version from AI
@@ -21,13 +21,13 @@ class EnhanceCommand(BaseSummaryCommand):
                 "📝 **Původní zpráva:**\n"
                 f"```\n{message}\n```\n"
                 "👀 **Náhled vylepšené verze:**\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
                 f"{enhanced}\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
                 "✨ **Vylepšená verze ke zkopírování:**\n"
-                "*Pro odeslání zkopírujte text z následujícího bloku:*\n"
+                "*Pro odeslání zkopíruj text z následujícího bloku:*\n"
                 f"```\n{enhanced}\n```\n"
-                "💡 *Tip: Klikněte na tlačítko kopírování v pravém horním rohu kódového bloku*",
+                "💡 *Tip: Klikni na tlačítko kopírování v pravém horním rohu kódového bloku*",
                 ephemeral=EPHEMERAL_MESSAGES
             )
             

@@ -6,7 +6,7 @@ class HelpCommand:
     async def execute(interaction: discord.Interaction):
         """Show help information"""
         help_text = """
-**Summary Bot - Pokročilé použití:**
+**Helper Bot - Pokročilé použití:**
 
 **Základní příkazy:**
 • `/sum [počet] [čas] [@uživatel] [--after datum] [--before datum]` - Shrne zprávy podle zadaných parametrů

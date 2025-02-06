@@ -1,27 +1,38 @@
-# Discord Channel Summarizer Bot
+# Discord Helper Bot
 
-A Discord bot that uses Google's Gemini Pro AI or Ollama to summarize channel conversations and extract vital information. Built with a modular and maintainable architecture using Discord's slash commands.
+A powerful Discord bot that leverages Google's Gemini Pro AI or Ollama to enhance your server communication. It can summarize conversations, extract vital information, and improve message formatting. Built with a modular architecture using Discord's slash commands.
 
 ## Features
 
-- Summarize channel messages using Google's Gemini Pro AI
-- Alternative AI provider support (Ollama)
-- Configurable message limit
-- Extract vital information from conversations (in Czech)
-- Filter messages by time, date range, and user mentions
-- Easy to use slash commands with parameter hints
-- Message formatting enhancement with AI
-- Modular code structure
-- Clean separation of concerns
+Core Features:
+- 🤖 Dual AI Support: Choose between Google's Gemini Pro or Ollama
+- 📝 Message Summarization: Get concise summaries of conversations
+- 🔍 Information Extraction: Find key points and vital information
+- ✨ Message Enhancement: Improve formatting and readability
+
+Technical Features:
+- ⚡ Slash Commands: Easy-to-use interface with parameter hints
+- 🔧 Flexible Configuration: Customizable message limits and filters
+- 📅 Advanced Filtering: Filter by time, date range, and users
+- 🏗️ Modular Architecture: Clean code structure and separation of concerns
 
 ## Setup
 
-1. Install Python dependencies:
+1. Install Python:
+   - Download and install Python 3.8 or higher from [python.org](https://python.org)
+   - Verify installation by running:
+     ```bash
+     python --version
+     # or
+     python3 --version
+     ```
+
+2. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-2. Create a Discord bot and get your token:
+3. Create a Discord bot and get your token:
    - Go to https://discord.com/developers/applications
    - Create a new application
    - Go to the Bot section
@@ -33,56 +44,82 @@ A Discord bot that uses Google's Gemini Pro AI or Ollama to summarize channel co
      - Required bot permissions
    - Use the generated URL to invite the bot to your server
 
-3. Configure AI provider:
+4. Configure AI provider:
    
    Option A) Google AI (default):
    - Go to https://makersuite.google.com/app/apikey
    - Create a new API key
    - Set `AI_PROVIDER=google` in `.env`
-   - Add your Google API key to `.env`
+   - Add your Google API key to `.env` as `GOOGLE_API_KEY`
    
    Option B) Ollama:
    - Install and run Ollama locally
    - Set `AI_PROVIDER=ollama` in `.env`
    - Configure `OLLAMA_HOST` and `OLLAMA_MODEL` in `.env`
+   - For a tutorial on using Ollama, check out [this video guide](https://odysee.com/@NaomiBrockwell:4/Local-LLM:d)
 
-4. Configure the bot:
+5. Configure the bot:
    - Copy `.env.example` to `.env`
    - Add your Discord bot token
    - Configure your chosen AI provider
 
-5. Run the bot:
+6. Run the bot:
    ```bash
    python main.py
    ```
 
 ## Project Structure
 
+The project follows a clean, modular architecture designed for maintainability and extensibility:
+
 ```
 src/
-├── commands/           # Command handlers
-│   ├── base.py        # Base command class
-│   ├── commands.py    # Command registration
-│   ├── filter_command.py
-│   ├── help_command.py
-│   ├── id_command.py
-│   └── link_command.py
-├── services/          # Core services
-│   ├── ai_service.py  # AI integration
-│   └── message_service.py
-└── utils/            # Utility functions
-    ├── argument_parser.py
-    └── time_parser.py
+├── commands/              # Command handlers
+│   ├── base.py           # Base command class with shared functionality
+│   ├── commands.py       # Command registration and routing
+│   ├── filter_command.py # Message filtering and summarization
+│   ├── help_command.py   # Help documentation
+│   ├── id_command.py     # Message ID-based operations
+│   ├── link_command.py   # Message link-based operations
+│   ├── find_command.py   # Custom prompt analysis
+│   └── enhance_command.py # Message formatting enhancement
+├── services/             # Core services
+│   ├── ai_service.py     # AI provider integration
+│   ├── message_service.py # Discord message handling
+│   └── ai_providers/     # AI provider implementations
+│       ├── base.py       # Base AI provider interface
+│       ├── factory.py    # Provider factory pattern
+│       ├── google_provider.py  # Google AI implementation
+│       └── ollama_provider.py  # Ollama implementation
+└── utils/               # Utility functions
+    ├── argument_parser.py # Command argument parsing
+    └── time_parser.py    # Time format handling
 ```
+
+### Key Components
+
+- **Commands**: Each command is implemented as a separate class, inheriting from `BaseSummaryCommand`
+- **Services**: Core functionality separated into services for better maintainability
+- **AI Providers**: Modular AI integration supporting multiple providers
+- **Utils**: Shared utility functions for parsing and data handling
+
+### Design Principles
+
+- **Modularity**: Each component has a single responsibility
+- **Extensibility**: Easy to add new commands or AI providers
+- **Clean Architecture**: Clear separation of concerns
+- **DRY (Don't Repeat Yourself)**: Common functionality shared through base classes
 
 ## Commands
 
-Basic Commands:
+### Basic Commands
+
 - `/sum [count] [time] [@user] [--after date] [--before date]` - Summarize messages with filters
 - `/help` - Show help information
 - `/sum-links [first_message_link] [last_message_link]` - Summarize messages between two message links
 - `/sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
-- `/vital [options]` - Extract vital information and key points (Czech)
+- `/vital [options]` - Extract vital information and key points
+- `/enhance [message]` - Enhance message formatting using AI
 - `/find [prompt] [options]` - Analyze messages using a custom prompt
 - `/enhance [message]` - Enhance message formatting using AI
 
@@ -99,7 +136,7 @@ Advanced Options:
 
 ## Examples
 
-```
+```bash
 # Basic usage
 /sum count:50                    # Last 50 messages
 
@@ -139,11 +176,3 @@ Advanced Options:
 ```
 
 ## Notes
-
-- Supports both Google's Gemini Pro and Ollama for text generation
-- Code follows object-oriented design principles
-- Each component has a single responsibility
-- Message Content Intent must be enabled in the Discord Developer Portal
-- Bot requires `applications.commands` scope for slash commands
-- The vital information extraction feature provides output in Czech language
-- The find command allows custom analysis using any prompt
