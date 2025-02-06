@@ -15,6 +15,7 @@ class HelpCommand:
 • `/sum-ids [první_id] [poslední_id]` - Shrne zprávy mezi dvěma ID
 • `/vital [možnosti]` - Extrahuje důležité informace a klíčové body
 • `/find [prompt] [možnosti]` - Analyzuje zprávy podle vlastního promptu
+• `/enhance [zpráva]` - Vylepší formátování zprávy pomocí AI
 
 **Pokročilé možnosti:**
 1. Časové shrnutí:

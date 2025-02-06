@@ -10,6 +10,7 @@ A Discord bot that uses Google's Gemini Pro AI or Ollama to summarize channel co
 - Extract vital information from conversations (in Czech)
 - Filter messages by time, date range, and user mentions
 - Easy to use slash commands with parameter hints
+- Message formatting enhancement with AI
 - Modular code structure
 - Clean separation of concerns
 
@@ -83,6 +84,7 @@ Basic Commands:
 - `/sum-ids [first_message_id] [last_message_id]` - Summarize messages between two message IDs
 - `/vital [options]` - Extract vital information and key points (Czech)
 - `/find [prompt] [options]` - Analyze messages using a custom prompt
+- `/enhance [message]` - Enhance message formatting using AI
 
 Advanced Options:
 1. Time-based summary:
@@ -130,6 +132,10 @@ Advanced Options:
 /find prompt:"What technical decisions were made?" time:24h        # Analyze last 24 hours
 /find prompt:"What is this person responsible for?" user:@username # Analyze user mentions
 /find prompt:"What was discussed about the API?"                   # Default: last 100 messages
+
+# Message enhancement
+/enhance message:"Meeting tomorrow at 2pm to discuss project status"   # Enhance message formatting
+/enhance message:"New feature: Added user authentication"              # Format feature announcement
 ```
 
 ## Notes

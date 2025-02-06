@@ -4,6 +4,7 @@ from .link_command import LinkSummaryCommand
 from .id_command import IdSummaryCommand
 from .filter_command import FilterSummaryCommand
 from .find_command import FindCommand
+from .enhance_command import EnhanceCommand
 from .help_command import HelpCommand
 from ..services.message_service import MessageService
 from ..services.ai_service import AiService
@@ -152,3 +153,17 @@ async def setup_commands(tree: app_commands.CommandTree):
     )
     async def help(interaction: discord.Interaction):
         await HelpCommand.execute(interaction)
+
+    @tree.command(
+        name="enhance",
+        description="Vylepší formátování zprávy pomocí AI"
+    )
+    @app_commands.describe(
+        message="Zpráva k vylepšení"
+    )
+    async def enhance(
+        interaction: discord.Interaction,
+        message: str
+    ):
+        command = EnhanceCommand(interaction, message_service, ai_service)
+        await command.execute(message)
